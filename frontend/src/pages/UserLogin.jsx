@@ -132,6 +132,12 @@ export default function UserLogin() {
                     Sign Up
                   </Link>
                 </p>
+                <p className="text-sm">
+                  Login as Admin 
+                  <Link to="/admin/login" className="text-primary font-bold">
+                    Login
+                  </Link>
+                </p>
               </div>
             </form>
           </CardContent>
