@@ -5,20 +5,15 @@ import EventModel from "../../models/event/Event.model";
 import ResponseHandler from "../../helpers/ResponseHandler";
 import AdminModel from "../../models/admin/Admin.model";
 import NodeCache from "node-cache";
-import authenticationMiddleware from "../../middlewares/authenticationMiddleware.middleware";
+import uploadImage from "../../services/uploadImage";
 
 const cache = new NodeCache();
 
 export const createEvent = async (req: Request, res: Response) => {
-  const {
-    title,
-    description,
-    startDate,
-    endDate,
-    location,
-    createdBy,
-    eventPic,
-  } = req.body;
+  const { title, description, startDate, endDate, location, createdBy } =
+    req.body;
+  console.log(req.body);
+  console.log(req.file);
 
   const { error } = EventCreationSchema.validate(req.body);
   if (error) {
@@ -29,6 +24,19 @@ export const createEvent = async (req: Request, res: Response) => {
     const admin = await AdminModel.findOne({ _id: createdBy });
     if (!admin) {
       return ErrorHandler.send(res, 404, "Admin not found");
+    }
+
+    let eventPic = "";
+
+    if (req.file) {
+      try {
+        const eventPicUrl = await uploadImage(res, req.file.path, {
+          folder: "networq/event_pic",
+        });
+        eventPic = eventPicUrl.secure_url as string;
+      } catch (error: any) {
+        return ErrorHandler.send(res, 500, "Error uploading images");
+      }
     }
 
     const event = await EventModel.create({
