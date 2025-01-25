@@ -1,13 +1,14 @@
-import {
-  NODE_HOST_NAME,
-  NODE_PORT,
-  NODE_USER,
-  NODE_PASS,
-  NODE_SERVICE,
-} from "./constants.js";
+import { NODE_USER, NODE_PASS, NODE_SERVICE } from "../config/constants";
 import nodemailer from "nodemailer";
 
-const sendEmail = async (to, subject, html, text) => {
+interface SendEmailProps {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+}
+
+const sendEmail = async ({ to, subject, html, text }: SendEmailProps) => {
   try {
     const transporter = nodemailer.createTransport({
       service: NODE_SERVICE,
