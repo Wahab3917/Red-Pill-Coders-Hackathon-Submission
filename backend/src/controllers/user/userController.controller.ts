@@ -10,6 +10,7 @@ import UserLoginSchema from "../../schema/user/UserLoginSchema.schema";
 import sendEmail from "../../services/sendEmail";
 import generateToken from "../../utils/generateToken";
 import bcrypt from "bcrypt";
+import cookieConfig from "../../utils/cookieConfig";
 
 export const userSignup = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -78,6 +79,8 @@ The NetworQ Team
 
     const token = await generateToken(userDTO, res);
 
+    res.cookie("token", token, cookieConfig);
+
     return ResponseHandler.send(
       res,
       200,
@@ -112,6 +115,8 @@ export const userLogin = async (req: Request, res: Response) => {
     const userDTO = new UserDTO(user as UserDTOProps);
 
     const token = await generateToken(user, res);
+
+    res.cookie("token", token, cookieConfig);
 
     return ResponseHandler.send(
       res,

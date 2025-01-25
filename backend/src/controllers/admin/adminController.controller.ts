@@ -10,6 +10,7 @@ import AdminDTO from "../../dto/admin/AdminDTO.dto";
 import sendEmail from "../../services/sendEmail";
 import generateToken from "../../utils/generateToken";
 import bcrypt from "bcrypt";
+import cookieConfig from "../../utils/cookieConfig";
 
 export const adminSignup = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -78,6 +79,8 @@ The NetworQ Team
 
     const token = await generateToken(newAdmin, res);
 
+    res.cookie("token", token, cookieConfig);
+
     return ResponseHandler.send(
       res,
       200,
@@ -112,6 +115,8 @@ export const adminLogin = async (req: Request, res: Response) => {
     const adminDTO = new AdminDTO(admin as AdminDTOProps);
 
     const token = await generateToken(admin, res);
+
+    res.cookie("token", token, cookieConfig);
 
     return ResponseHandler.send(
       res,
