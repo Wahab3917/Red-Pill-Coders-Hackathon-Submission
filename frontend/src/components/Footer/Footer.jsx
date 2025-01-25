@@ -1,82 +1,96 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
-import Logo from '../Logo';
+import { Button } from "../ui/button";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 
-function footer() {
+function Footer() {
   return (
-    <footer className="text-gray-400 bg-gray-900 body-font">
-      <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-        <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
-          <Link to='/' className="flex title-font font-medium items-center md:justify-start justify-center text-white">
-            <Logo width={150} />
-          </Link>
-          <p className="mt-2 text-sm text-gray-500">Empowering Connections. Igniting Innovation. Join the ultimate networking platform where ideas thrive, connections grow, and opportunities emerge.</p>
-        </div>
-        <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-            <h2 className="title-font font-medium text-white tracking-widest text-sm mb-3">Explore</h2>
-            <nav className="list-none mb-10">
-              <li>
-                <Link className="text-gray-400 hover:text-white">Our Upcoming Events</Link>
-              </li>
-              <li>
-                <Link className="text-gray-400 hover:text-white">Success Projects</Link>
-              </li>
-            </nav>
-          </div>
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-            <h2 className="title-font font-medium text-white tracking-widest text-sm mb-3">Connect</h2>
-            <nav className="list-none mb-10">
-              <li>
-                <Link className="text-gray-400 hover:text-white">FAQs</Link>
-              </li>
-              <li>
-                <Link className="text-gray-400 hover:text-white">Contact Us</Link>
-              </li>
-              <li>
-                <Link className="text-gray-400 hover:text-white">Membership</Link>
-              </li>
-            </nav>
-          </div>
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-            <h2 className="title-font font-medium text-white tracking-widest text-sm mb-3">Legal</h2>
-            <nav className="list-none mb-10">
-              <li>
-                <Link className="text-gray-400 hover:text-white">Terms & Conditions</Link>
-              </li>
-              <li>
-                <Link className="text-gray-400 hover:text-white">Privacy Policy</Link>
-              </li>
-              <li>
-                <Link className="text-gray-400 hover:text-white">Cookies Policy</Link>
-              </li>
-            </nav>
-          </div>
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-            <h2 className="title-font font-medium text-white tracking-widest text-sm mb-3">Follow Us</h2>
-            <nav className="list-none mb-10">
-              <li>
-                <Link className="text-gray-400 hover:text-white">Instagram</Link>
-              </li>
-              <li>
-                <Link className="text-gray-400 hover:text-white">LinkedIn</Link>
-              </li>
-              <li>
-                <Link className="text-gray-400 hover:text-white">Twitter</Link>
-              </li>
-            </nav>
-          </div>
-        </div>
-      </div>
-      <div className="bg-gray-800 bg-opacity-75">
-        <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-          <p className="text-gray-400 text-sm text-center sm:text-left">© 2025 Red Pill Coders —
-            <Link href="#" rel="noopener noreferrer" className="text-gray-500 ml-1" target="_blank">@networQ</Link>
+    <footer className="bg-muted text-muted-foreground py-10 px-8">
+      <div className="container mx-auto grid md:grid-cols-3 gap-8">
+        {/* About Section */}
+        <div>
+          <h4 className="text-lg font-semibold mb-4">About NetworQ</h4>
+          <p className="text-sm">
+            We connect brilliant minds through events designed for students, professionals, and entrepreneurs. 
+            Discover opportunities, build connections, and unlock your potential.
           </p>
         </div>
+
+        {/* Navigation Links */}
+        <div>
+          <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul className="space-y-2">
+            <li>
+              <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-primary transition-colors">About</Link>
+            </li>
+            <li>
+              <Link to="/events" className="hover:text-primary transition-colors">Events</Link>
+            </li>
+            <li>
+              <Link to="/projects" className="hover:text-primary transition-colors">Projects</Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Social Media & Newsletter */}
+        <div>
+          <h4 className="text-lg font-semibold mb-4">Stay Connected</h4>
+          <div className="flex space-x-4 mb-4">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Facebook size={20} />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Twitter size={20} />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Instagram size={20} />
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Linkedin size={20} />
+            </a>
+          </div>
+          <Link to="/signup">
+            <Button
+              variant="outline"
+              className="py-2 px-6 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              Subscribe to Newsletter
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-border mt-8 pt-4 text-center">
+        <p className="text-sm">
+          © {new Date().getFullYear()} NetworQ. All rights reserved.
+        </p>
       </div>
     </footer>
-  )
+  );
 }
 
-export default footer
+export default Footer;
