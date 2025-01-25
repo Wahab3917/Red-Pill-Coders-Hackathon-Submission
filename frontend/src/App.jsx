@@ -5,6 +5,8 @@ import PageLayout from "./layouts/pageLayout";
 // PAGES
 import Home from "./pages/home";
 import About from "./pages/About";
+import Login from "./pages/UserLogin";
+import Signup from "./pages/UserSignup";
 
 function App() {
   return (
@@ -19,6 +21,16 @@ function App() {
           <PageLayout>
             <About />
           </PageLayout>
+        }/>
+        <Route path="/login" element={
+          <AuthLayout>
+            <Login />
+          </AuthLayout>
+        }/>
+        <Route path="/signup" element={
+          <AuthLayout>
+            <Signup />
+          </AuthLayout>
         }/>
       </Routes>
     </Router>

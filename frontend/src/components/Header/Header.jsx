@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import { Button } from "../ui/button";
 
 function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    setIsLoggedIn(!!userData?.token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userData");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   const navItems = [
     { name: "Home", slug: "/", active: true },
@@ -15,14 +27,12 @@ function Header() {
 
   return (
     <header className="flex justify-between items-center py-6 px-8 bg-background text-foreground shadow-md">
-      {/* Logo Section */}
       <div>
         <Link to="/">
           <Logo width={150} />
         </Link>
       </div>
 
-      {/* Navigation Section */}
       <nav className="flex gap-6">
         {navItems.map(
           (item) =>
@@ -38,16 +48,25 @@ function Header() {
         )}
       </nav>
 
-      {/* Actions Section */}
       <div>
-        <Link to="/login">
+        {isLoggedIn ? (
           <Button
             variant="outline"
+            onClick={handleLogout}
             className="py-2 px-6 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
           >
-            Login
+            Logout
           </Button>
-        </Link>
+          ) : (
+          <Link to="/login">
+            <Button
+              variant="outline"
+              className="py-2 px-6 rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              Login
+            </Button>
+          </Link>
+          )}
       </div>
     </header>
   );

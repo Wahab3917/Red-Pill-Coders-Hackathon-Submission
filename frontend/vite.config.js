@@ -9,4 +9,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": "https://e087-39-43-53-47.ngrok-free.app"
+    }
+  }
 })
