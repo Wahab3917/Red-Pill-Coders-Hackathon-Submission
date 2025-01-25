@@ -9,6 +9,9 @@ import EventsPage from "./pages/EventsPage.jsx";
 import Project from "./pages/Project.jsx";
 import Login from "./pages/UserLogin";
 import Signup from "./pages/UserSignup";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AddEvent from "./pages/AddEvent";
 
 function App() {
   return (
@@ -49,6 +52,21 @@ function App() {
           <AuthLayout>
             <Signup />
           </AuthLayout>
+        }/>
+        <Route path="/admin/login" element={
+          <AuthLayout>
+            <AdminLogin />
+          </AuthLayout>
+        }/>
+        <Route path="/dashboard" element={
+          <PageLayout>
+            <AdminDashboard />
+          </PageLayout>
+        }/>
+        <Route path="/add-event" element={
+          <PageLayout>
+            <AddEvent />
+          </PageLayout>
         }/>
       </Routes>
     </Router>

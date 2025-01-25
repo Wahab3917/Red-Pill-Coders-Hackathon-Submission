@@ -5,43 +5,54 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Logo } from "@/components";
+import useUserStore from "@/store/useUserStore";
 
 export default function UserSignup() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [messages, setMessages] = useState({ error: "", success: "" });
+  const { setUser } = useUserStore();
   const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-    setSuccessMessage("");
+    setMessages({ error: "", success: "" });
+
+    const { name, email, password } = formData;
 
     try {
-      const response = await axios.post(
-        "/api/v1/user/signup",
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const response = await axios.post("/api/v1/user/signup", {
+        name,
+        email,
+        password,
+      });
 
-      // Store token and navigate to login
+      // Extract token and user details
       const { token } = response.data;
-      localStorage.setItem("userData", JSON.stringify({ token }));
-      setSuccessMessage("Signup successful! Redirecting to login...");
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      const { _id, name: userName, email: userEmail, role } = response.data.data;
+
+      // Update state and navigate to login page
+      setMessages({ success: "Signup successful! Redirecting to login..." });
+      setUser({
+        id: _id,
+        name: userName,
+        email: userEmail,
+        token,
+        role
+      });
+      navigate("/");
     } catch (error) {
       const errorMsg =
         error.response?.data?.message || "An error occurred. Please try again.";
-      setErrorMessage(errorMsg);
+      setMessages({ error: errorMsg });
     }
   };
 
@@ -58,6 +69,7 @@ export default function UserSignup() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit}>
+              {/* Name Field */}
               <div className="mb-4">
                 <label htmlFor="name" className="block text-lg text-primary mb-2">
                   Name
@@ -65,14 +77,15 @@ export default function UserSignup() {
                 <Input
                   type="text"
                   id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={formData.name}
+                  onChange={handleInputChange}
                   placeholder="Enter your name"
                   className="w-full px-4 py-2 border rounded-lg"
                   required
                 />
               </div>
 
+              {/* Email Field */}
               <div className="mb-4">
                 <label htmlFor="email" className="block text-lg text-primary mb-2">
                   Email Address
@@ -80,23 +93,27 @@ export default function UserSignup() {
                 <Input
                   type="email"
                   id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={handleInputChange}
                   placeholder="Enter your email"
                   className="w-full px-4 py-2 border rounded-lg"
                   required
                 />
               </div>
 
+              {/* Password Field */}
               <div className="mb-4">
-                <label htmlFor="password" className="block text-lg text-primary mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-lg text-primary mb-2"
+                >
                   Password
                 </label>
                 <Input
                   type="password"
                   id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={handleInputChange}
                   placeholder="Enter your password"
                   className="w-full px-4 py-2 border rounded-lg"
                   required
@@ -104,17 +121,18 @@ export default function UserSignup() {
               </div>
 
               {/* Error Message */}
-              {errorMessage && (
-                <p className="text-red-600 text-center mb-4">{errorMessage}</p>
+              {messages.error && (
+                <p className="text-red-600 text-center mb-4">{messages.error}</p>
               )}
 
               {/* Success Message */}
-              {successMessage && (
+              {messages.success && (
                 <p className="text-green-600 text-center mb-4">
-                  {successMessage}
+                  {messages.success}
                 </p>
               )}
 
+              {/* Submit Button */}
               <div className="flex justify-center gap-4">
                 <Button
                   type="submit"
@@ -125,6 +143,7 @@ export default function UserSignup() {
                 </Button>
               </div>
 
+              {/* Redirect to Login */}
               <div className="text-center mt-4">
                 <p className="text-sm">
                   Already have an account?{" "}

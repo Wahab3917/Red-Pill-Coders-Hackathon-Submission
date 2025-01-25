@@ -1,35 +1,55 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Logo } from "@/components";
-import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import useUserStore from "@/store/useUserStore";
 
 export default function UserLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [messages, setMessages] = useState({ error: "", success: "" });
+  const { setUser } = useUserStore();
   const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessages({ error: "", success: "" });
+
+    const { email, password } = formData;
 
     try {
-      const response = await axios.post('/api/v1/user/login', {
+      const response = await axios.post("/api/v1/user/login", {
         email,
         password,
       });
 
-      if (response.data) {
-        localStorage.setItem("userData", JSON.stringify(response.data));
-        navigate("/");
-      } else {
-        setError("Invalid credentials");
-      }
+      // Extract token and user details
+      const { token } = response.data;
+      const { _id, name: userName, email: userEmail, role } = response.data.data;
+
+      // Update Zustand store and navigate to home
+      setUser({
+        id: _id,
+        name: userName,
+        email: userEmail,
+        token,
+        role,
+      });
+      navigate("/");
     } catch (error) {
-      console.error("Login failed:", error);
-      setError("An error occurred during login. Please try again.");
+      const errorMsg =
+        error.response?.data?.message || "An error occurred. Please try again.";
+      setMessages({ error: errorMsg });
     }
   };
 
@@ -46,6 +66,7 @@ export default function UserLogin() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit}>
+              {/* Email Field */}
               <div className="mb-4">
                 <label htmlFor="email" className="block text-lg text-primary mb-2">
                   Email Address
@@ -53,29 +74,46 @@ export default function UserLogin() {
                 <Input
                   type="email"
                   id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={handleInputChange}
                   placeholder="Enter your email"
                   className="w-full px-4 py-2 border rounded-lg"
                   required
                 />
               </div>
 
-              <div className="mb-6">
-                <label htmlFor="password" className="block text-lg text-primary mb-2">
+              {/* Password Field */}
+              <div className="mb-4">
+                <label
+                  htmlFor="password"
+                  className="block text-lg text-primary mb-2"
+                >
                   Password
                 </label>
                 <Input
                   type="password"
                   id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={handleInputChange}
                   placeholder="Enter your password"
                   className="w-full px-4 py-2 border rounded-lg"
                   required
                 />
               </div>
 
+              {/* Error Message */}
+              {messages.error && (
+                <p className="text-red-600 text-center mb-4">{messages.error}</p>
+              )}
+
+              {/* Success Message */}
+              {messages.success && (
+                <p className="text-green-600 text-center mb-4">
+                  {messages.success}
+                </p>
+              )}
+
+              {/* Submit Button */}
               <div className="flex justify-center gap-4">
                 <Button
                   type="submit"
@@ -86,6 +124,7 @@ export default function UserLogin() {
                 </Button>
               </div>
 
+              {/* Redirect to Signup */}
               <div className="text-center mt-4">
                 <p className="text-sm">
                   Don't have an account?{" "}
