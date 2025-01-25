@@ -11,7 +11,7 @@ const EventCreationSchema = joi.object({
   endDate: joi.date().required(),
   location: joi.string().required(),
   createdBy: joi.string().required(),
-  eventPic: joi.string().optional(),
+  eventPic: joi.string().required(),
 });
 
 export default EventCreationSchema;

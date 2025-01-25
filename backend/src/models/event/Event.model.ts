@@ -42,7 +42,7 @@ const eventModel: Schema<IEvent> = new Schema<IEvent>(
     },
     eventPic: {
       type: String,
-      // required: true,
+      required: true,
     },
     registeredUsers: {
       type: Number,
