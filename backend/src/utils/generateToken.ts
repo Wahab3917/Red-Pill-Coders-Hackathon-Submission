@@ -8,7 +8,12 @@ const generateToken = (payload: any, res: Response): any => {
     return ErrorHandler.send(res, 400, "JWT_SECRET is not set");
   }
   return jwt.sign(
-    { id: payload._id, name: payload.name, email: payload.email },
+    {
+      id: payload._id,
+      name: payload.name,
+      email: payload.email,
+      role: payload.role,
+    },
     JWT_SECRET,
     { expiresIn: "30d" }
   );

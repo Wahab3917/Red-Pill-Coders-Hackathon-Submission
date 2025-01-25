@@ -4,6 +4,7 @@ import cors from "cors";
 import dbConnect from "./config/dbConnect";
 import adminRoutes from "./routes/admin/adminRoutes.routes";
 import userRoutes from "./routes/user/userRoutes.routes";
+import eventRoutes from "./routes/event/eventRoutes.routes";
 
 const app: Application = express();
 
@@ -19,7 +20,8 @@ app.use(
 );
 
 app.use("/api", adminRoutes);
-app.use("/api", userRoutes)
+app.use("/api", userRoutes);
+app.use("/api", eventRoutes);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500;

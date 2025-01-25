@@ -72,7 +72,8 @@ module.exports = {
     plugin(function ({ addBase }) {
       addBase({
         h1: {
-          "@apply text-[56px] font-extrabold leading-[64px] text-foreground": "",
+          "@apply text-[56px] font-extrabold leading-[64px] text-foreground":
+            "",
         },
         h2: {
           "@apply text-[46px] font-bold leading-[52px] text-foreground": "",
