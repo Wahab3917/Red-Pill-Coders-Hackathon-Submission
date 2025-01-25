@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
@@ -22,19 +23,23 @@ export default function HomePage() {
                 professionals alike.
               </p>
               <div className="flex justify-center gap-4">
-                <Button
-                  size="lg"
-                  className="bg-primary text-primary-foreground rounded-full"
-                >
-                  Explore Events
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-primary text-primary rounded-full"
-                >
-                  Become a Member
-                </Button>
+                <Link to={"/events"}>
+                  <Button
+                    size="lg"
+                    className="bg-primary text-primary-foreground rounded-full"
+                  >
+                    Explore Events
+                  </Button>
+                </Link>
+                <Link to={"/login"}>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-primary text-primary rounded-full"
+                  >
+                    Become a Member
+                  </Button>
+                </Link>
               </div>
             </div>
           </section>

@@ -21,12 +21,12 @@ function App() {
           <PageLayout>
             <Home />
           </PageLayout>
-        }/>
+        } />
         <Route path="/about" element={
           <PageLayout>
             <About />
           </PageLayout>
-        }/>
+        } />
         <Route
           path="/events"
           element={
@@ -47,27 +47,27 @@ function App() {
           <AuthLayout>
             <Login />
           </AuthLayout>
-        }/>
+        } />
         <Route path="/signup" element={
           <AuthLayout>
             <Signup />
           </AuthLayout>
-        }/>
+        } />
         <Route path="/admin/login" element={
           <AuthLayout>
             <AdminLogin />
           </AuthLayout>
-        }/>
+        } />
         <Route path="/dashboard" element={
           <PageLayout>
             <AdminDashboard />
           </PageLayout>
-        }/>
+        } />
         <Route path="/add-event" element={
           <PageLayout>
             <AddEvent />
           </PageLayout>
-        }/>
+        } />
       </Routes>
     </Router>
   );

@@ -1,36 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import image1 from "@/assets/Chairs.jpg";
-const eventsData = [
-  {
-    name: "Tech Innovators Meetup",
-    date: "March 10, 2025",
-    time: "10:00 AM - 4:00 PM",
-    venue: "Lahore Expo Center",
-    description:
-      "An event to connect with tech enthusiasts, share ideas, and pitch your innovations.",
-  },
-  {
-    name: "Startup Growth Forum",
-    date: "March 24, 2025",
-    time: "12:00 PM - 5:00 PM",
-    venue: "Islamabad Expo Center",
-    description:
-      "Gain insights from industry leaders and network with potential investors.",
-  },
-  {
-    name: "AI & Future Tech Conference",
-    date: "April 5, 2025",
-    time: "9:00 AM - 3:00 PM",
-    venue: "Karachi Convention Center",
-    description:
-      "Dive into the future of artificial intelligence and emerging technologies with leading experts and innovators.",
-  },
-];
+import image1 from "@/assets/Chairs.jpg"; // You can use a default image for events without a custom image
 
 export default function EventsPage() {
+  const [events, setEvents] = useState([]); // Store fetched events
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Toggle login state
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(""); // Error state
+
+  useEffect(() => {
+    // Fetch events from API
+    const fetchEvents = async () => {
+      try {
+        const eventsData = await axios.get("/api/v1/events/get-events");
+        setEvents(eventsData.data.data.getEvents)
+        console.log(eventsData.data);
+        
+      } catch (error) {
+        console.error("Error fetching events:", err);
+        setError("Failed to load events.");
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []); // Empty dependency array to run the effect once when the component mounts
 
   return (
     <>
@@ -59,14 +55,20 @@ export default function EventsPage() {
               <h2 className="text-2xl font-semibold text-center mb-8">
                 Explore Events
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-6">
-                {eventsData.map((event, index) => (
+
+              {/* Show loading or error message */}
+              {loading && <p className="text-center text-lg">Loading events...</p>}
+              {error && <p className="text-center text-lg text-red-600">{error}</p>}
+
+              {/* Events Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {events.map((event, index) => (
                   <Card key={index}>
                     <CardHeader>
                       {/* Placeholder Image */}
                       <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden">
                         <img
-                          src={image1}
+                          src={event.eventPic || image1} // Use default image if event has no picture
                           alt={event.name}
                           className="w-full h-full object-cover"
                         />
