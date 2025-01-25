@@ -5,7 +5,7 @@ import PageLayout from "./layouts/pageLayout";
 // PAGES
 import Home from "./pages/home";
 import About from "./pages/About";
-import Event from "./pages/Event.jsx";
+import EventsPage from "./pages/EventsPage.jsx";
 import Project from "./pages/Project.jsx";
 import Login from "./pages/UserLogin";
 import Signup from "./pages/UserSignup";
@@ -28,7 +28,7 @@ function App() {
           path="/events"
           element={
             <PageLayout>
-              <Event />
+              <EventsPage />
             </PageLayout>
           }
         />
